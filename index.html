@@ -3,186 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naqsh Shoes | Admin & Store</title>
+    <title>Naqsh Shoes | Control Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
         
-        :root { --accent: #d4af37; --gold-grad: linear-gradient(135deg, #d4af37 0%, #f1d57a 50%, #d4af37 100%); }
+        :root { --accent: #d4af37; }
+        body { background-color: #030303; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
 
-        body { background-color: #030303; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; cursor: crosshair; }
-
-        /* Perfect Logo Circle */
-        .logo-wrapper { position: relative; width: 130px; height: 130px; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
-        .logo-outline { position: absolute; inset: 0; border: 2px solid transparent; border-top-color: var(--accent); border-radius: 50%; animation: spin 4s linear infinite; }
-        .logo-img { width: 100px; height: 100px; border-radius: 50%; object-fit: contain; background: #000; padding: 5px; z-index: 10; border: 1px solid rgba(212,175,55,0.2); }
+        /* Perfect Logo Fix */
+        .logo-circle {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto; overflow: hidden;
+            position: relative;
+        }
+        .logo-circle img {
+            width: 90%; height: 90%;
+            object-fit: contain; /* Isse logo kategi nahi */
+            border-radius: 50%;
+        }
+        .logo-glow {
+            position: absolute; inset: 0;
+            border: 2px solid transparent;
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 3s linear infinite;
+        }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        #cursor-glow { width: 400px; height: 400px; background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%); position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); }
-        .sidebar { height: 100vh; width: 280px; position: fixed; left: 0; top: 0; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(40px); z-index: 1000; border-right: 1px solid rgba(212, 175, 55, 0.1); }
-        .main-content { margin-left: 280px; padding: 40px; }
+        .sidebar { height: 100vh; width: 260px; position: fixed; left: 0; top: 0; background: #080808; border-right: 1px solid #1a1a1a; z-index: 1000; }
+        .main-content { margin-left: 260px; padding: 40px; min-height: 100vh; }
         
-        .nav-link { padding: 15px 20px; border-radius: 15px; transition: 0.4s; cursor: pointer; display: flex; align-items: center; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.5); }
-        .nav-link:hover { background: rgba(212, 175, 55, 0.1); color: var(--accent); transform: translateX(5px); }
-        
-        .gold-btn { background: var(--gold-grad); color: black; font-weight: 900; text-transform: uppercase; transition: 0.5s; letter-spacing: 1px; }
-        .product-card { background: #0d0d0d; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05); transition: 0.5s; overflow: hidden; }
-        .product-card:hover { transform: translateY(-10px); border-color: var(--accent); }
+        .nav-btn { width: 100%; padding: 15px; text-align: left; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #666; transition: 0.3s; }
+        .nav-btn:hover { color: var(--accent); background: rgba(212,175,55,0.05); }
 
-        input { background: #000 !important; border: 1px solid #222 !important; color: white !important; padding: 12px; border-radius: 12px; width: 100%; margin-bottom: 10px; font-size: 12px; }
-        input:focus { border-color: var(--accent) !important; outline: none; }
-        
-        #login-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000; display: none; align-items: center; justify-content: center; }
-        .glass-panel { background: #0a0a0a; padding: 40px; border-radius: 30px; border: 1px solid rgba(212,175,55,0.2); width: 350px; text-align: center; }
+        .admin-card { background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 20px; padding: 25px; }
+        input { background: #000; border: 1px solid #222; color: #fff; padding: 12px; border-radius: 10px; width: 100%; margin-bottom: 15px; outline: none; }
+        input:focus { border-color: var(--accent); }
+
+        #login-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
-<div id="cursor-glow"></div>
-
-<div id="login-overlay">
-    <div class="glass-panel animate__animated animate__zoomIn">
-        <h2 style="font-family: 'Syncopate';" class="text-yellow-500 mb-6 text-sm">SECURITY_CHECK</h2>
-        <input type="text" id="admin-user" placeholder="USERNAME">
-        <input type="password" id="admin-pass" placeholder="PASSWORD">
-        <button onclick="attemptLogin()" class="w-full gold-btn py-3 rounded-xl mt-4">LOGIN</button>
-        <button onclick="closeLogin()" class="text-gray-600 text-[10px] mt-4 uppercase tracking-widest">Cancel</button>
+<div id="login-modal">
+    <div class="bg-black border border-yellow-500/30 p-10 rounded-3xl w-80 text-center">
+        <h2 class="text-yellow-500 font-bold mb-6 tracking-widest text-xs">ADMIN AUTH</h2>
+        <input type="text" id="user" placeholder="ID">
+        <input type="password" id="pass" placeholder="KEY">
+        <button onclick="checkAuth()" class="w-full bg-yellow-500 text-black font-bold py-3 rounded-xl mt-4">ENTER</button>
+        <button onclick="closeLogin()" class="text-gray-500 text-[10px] mt-4 uppercase">Abort</button>
     </div>
 </div>
 
 <aside class="sidebar p-8 flex flex-col justify-between">
     <div>
-        <div class="logo-wrapper mb-6">
-            <div class="logo-outline"></div>
-            <img src="https://instagram.fkhi16-2.fna.fbcdn.net/v/t51.2885-19/624808014_17848151646670722_8018140761805361040_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby41MDAuYzIifQ&_nc_ht=instagram.fkhi16-2.fna.fbcdn.net&_nc_cat=106&_nc_oc=Q6cZ2QFp6joj10hXacsfbmyNwTBvjFRRAzMqn8-2kV_K6zRGRt-cRVAMK7tIJhGARkcVFTo&_nc_ohc=DVcveLJJ5coQ7kNvwG2EN4E&_nc_gid=8xKqzyeYLcmmLWk70EzmUA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Afr6VGRgrtFaz5bJRLl8ZHAPHQa4f8Yy36XCUG4pI-bpTQ&oe=69814903&_nc_sid=7a9f4b" 
-                 class="logo-img">
+        <div class="logo-circle mb-4">
+            <div class="logo-glow"></div>
+            <img src="https://instagram.fkhi16-2.fna.fbcdn.net/v/t51.2885-19/624808014_17848151646670722_8018140761805361040_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby41MDAuYzIifQ&_nc_ht=instagram.fkhi16-2.fna.fbcdn.net&_nc_cat=106&_nc_oc=Q6cZ2QFp6joj10hXacsfbmyNwTBvjFRRAzMqn8-2kV_K6zRGRt-cRVAMK7tIJhGARkcVFTo&_nc_ohc=DVcveLJJ5coQ7kNvwG2EN4E&_nc_gid=8xKqzyeYLcmmLWk70EzmUA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Afr6VGRgrtFaz5bJRLl8ZHAPHQa4f8Yy36XCUG4pI-bpTQ&oe=69814903&_nc_sid=7a9f4b" alt="Logo">
         </div>
-        <h1 style="font-family: 'Syncopate';" class="text-center text-[10px] tracking-[0.5em] text-yellow-500 font-bold mb-10">NAQSH</h1>
-        
-        <nav class="space-y-2">
-            <a onclick="showSection('home')" class="nav-link">Home</a>
-            <a onclick="showSection('products')" class="nav-link">Gallery</a>
-            <a onclick="openAdmin()" class="nav-link mt-10 opacity-30 hover:opacity-100">⚙️ System</a>
+        <h1 class="text-center text-yellow-500 font-bold tracking-[0.4em] text-[10px] mb-10">NAQSH</h1>
+
+        <nav>
+            <button onclick="showPage('home')" class="nav-btn">01. Home</button>
+            <button onclick="showPage('gallery')" class="nav-btn">02. Gallery</button>
+            <button onclick="openLogin()" class="nav-btn mt-10 opacity-30 hover:opacity-100">⚙️ System</button>
         </nav>
     </div>
 
-    <div class="space-y-3 pb-8 border-t border-white/5 pt-6">
-        <a href="https://wa.me/0370168186" target="_blank" class="text-[9px] font-bold opacity-40 hover:opacity-100 uppercase tracking-widest block transition">WhatsApp</a>
-        <a href="https://instagram.com/naqshshoes" target="_blank" class="text-[9px] font-bold opacity-40 hover:opacity-100 uppercase tracking-widest block transition">Instagram</a>
-        <a href="https://facebook.com/naqshshoes" target="_blank" class="text-[9px] font-bold opacity-40 hover:opacity-100 uppercase tracking-widest block transition">Facebook</a>
+    <div class="space-y-3 pb-6 border-t border-white/5 pt-6">
+        <a href="#" class="text-[9px] font-bold text-gray-500 hover:text-white uppercase tracking-widest block">WhatsApp</a>
+        <a href="#" class="text-[9px] font-bold text-gray-500 hover:text-white uppercase tracking-widest block">Instagram</a>
+        <a href="#" class="text-[9px] font-bold text-gray-500 hover:text-white uppercase tracking-widest block">Facebook</a>
     </div>
 </aside>
 
 <main class="main-content">
     <section id="home-page" class="animate__animated animate__fadeIn">
-        <div class="relative h-[80vh] rounded-[40px] overflow-hidden flex items-center justify-center bg-[#080808]">
-            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=2000')] bg-cover bg-center opacity-30"></div>
-            <div class="relative text-center z-10 p-10">
-                <h2 style="font-family: 'Syncopate';" class="text-6xl font-black text-white mb-6">NAQSH ELITE</h2>
-                <button onclick="showSection('products')" class="gold-btn px-12 py-4 rounded-full text-[10px]">Enter Gallery</button>
+        <div class="h-[80vh] bg-zinc-900 rounded-[40px] flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10"></div>
+            <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2000" class="absolute inset-0 w-full h-full object-cover opacity-40">
+            <div class="relative z-20 text-center">
+                <h2 style="font-family: 'Syncopate';" class="text-6xl font-bold mb-6">NAQSH ELITE</h2>
+                <button onclick="showPage('gallery')" class="bg-yellow-500 text-black px-10 py-4 rounded-full font-bold text-xs uppercase">View Stock</button>
             </div>
         </div>
     </section>
 
-    <section id="products-page" class="hidden animate__animated animate__fadeIn">
-        <h2 style="font-family: 'Syncopate';" class="text-3xl font-bold mb-10 text-yellow-500">THE_VAULT</h2>
-        <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    <section id="gallery-page" class="hidden animate__animated animate__fadeIn">
+        <h2 class="text-3xl font-bold mb-10 tracking-tighter">AVAILABLE_STOCK</h2>
+        <div id="store-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </section>
 
     <section id="admin-page" class="hidden animate__animated animate__fadeIn">
         <div class="flex justify-between items-center mb-10">
-            <h2 style="font-family: 'Syncopate';" class="text-2xl font-bold">COMMAND_CENTER</h2>
-            <button onclick="showSection('home')" class="text-red-500 text-xs font-bold uppercase">Logout</button>
+            <h2 class="text-2xl font-bold text-yellow-500 uppercase tracking-tighter">Management Panel</h2>
+            <button onclick="showPage('home')" class="bg-red-500/10 text-red-500 px-6 py-2 rounded-lg text-xs font-bold">EXIT</button>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div class="bg-[#0a0a0a] p-8 rounded-3xl border border-white/5">
-                <h3 class="text-xs font-bold text-yellow-500 mb-6 uppercase tracking-widest">Add New Stock</h3>
-                <input type="text" id="p-name" placeholder="Shoe Name">
-                <input type="text" id="p-price" placeholder="Price (e.g. 8,500 PKR)">
-                <input type="text" id="p-img" placeholder="Image URL">
-                <button onclick="saveProduct()" class="w-full gold-btn py-3 rounded-xl mt-2">Update Database</button>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div class="admin-card">
+                <h3 class="text-xs font-bold mb-6 text-gray-400 uppercase">Inject New Data</h3>
+                <input type="text" id="n-name" placeholder="Shoe Name">
+                <input type="text" id="n-price" placeholder="Price (e.g. 8,500)">
+                <input type="text" id="n-img" placeholder="Image URL">
+                <button onclick="addItem()" class="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-yellow-500 transition">SAVE ASSET</button>
             </div>
-            <div id="admin-list" class="space-y-4"></div>
+            <div class="lg:col-span-2 admin-card" id="admin-inventory">
+                </div>
         </div>
     </section>
 </main>
 
 <script>
-    // Cursor Movement
-    const glow = document.getElementById('cursor-glow');
-    document.addEventListener('mousemove', (e) => {
-        glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px';
-    });
+    let db = JSON.parse(localStorage.getItem('naqsh_stock')) || [];
 
-    // Database
-    let inventory = JSON.parse(localStorage.getItem('naqsh_db')) || [
-        { id: 1, name: "Air Jordan Luxury", price: "8,500 PKR", img: "https://images.unsplash.com/photo-1584735175315-9d5df23860e6?q=80&w=500" }
-    ];
-
-    function showSection(name) {
-        ['home', 'products', 'admin'].forEach(s => document.getElementById(s + '-page').classList.add('hidden'));
-        document.getElementById(name + '-page').classList.remove('hidden');
-        if(name === 'products') renderStore();
-        if(name === 'admin') renderAdmin();
+    function showPage(id) {
+        ['home', 'gallery', 'admin'].forEach(p => document.getElementById(p + '-page').classList.add('hidden'));
+        document.getElementById(id + '-page').classList.remove('hidden');
+        if(id === 'gallery') renderGallery();
+        if(id === 'admin') renderAdminList();
     }
 
-    // Admin Functions
-    function openAdmin() { document.getElementById('login-overlay').style.display = 'flex'; }
-    function closeLogin() { document.getElementById('login-overlay').style.display = 'none'; }
-    function attemptLogin() {
-        const u = document.getElementById('admin-user').value;
-        const p = document.getElementById('admin-pass').value;
+    // Login Auth
+    function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
+    function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
+    function checkAuth() {
+        const u = document.getElementById('user').value;
+        const p = document.getElementById('pass').value;
         if(u === "NaqshShoes" && p === "Gixxer1000") {
-            closeLogin(); showSection('admin');
+            closeLogin(); showPage('admin');
         } else { alert("ACCESS DENIED"); }
     }
 
-    function saveProduct() {
-        const name = document.getElementById('p-name').value;
-        const price = document.getElementById('p-price').value;
-        const img = document.getElementById('p-img').value;
+    // Product Logic
+    function addItem() {
+        const name = document.getElementById('n-name').value;
+        const price = document.getElementById('n-price').value;
+        const img = document.getElementById('n-img').value;
         if(name && price && img) {
-            inventory.unshift({ id: Date.now(), name, price, img });
-            localStorage.setItem('naqsh_db', JSON.stringify(inventory));
-            renderAdmin();
+            db.push({ id: Date.now(), name, price, img });
+            localStorage.setItem('naqsh_stock', JSON.stringify(db));
+            renderAdminList();
             alert("Stock Added!");
         }
     }
 
     function deleteItem(id) {
-        inventory = inventory.filter(i => i.id !== id);
-        localStorage.setItem('naqsh_db', JSON.stringify(inventory));
-        renderAdmin();
+        db = db.filter(item => item.id !== id);
+        localStorage.setItem('naqsh_stock', JSON.stringify(db));
+        renderAdminList();
     }
 
-    function renderStore() {
-        const container = document.getElementById('product-list');
-        container.innerHTML = inventory.map(item => `
-            <div class="product-card">
-                <div class="h-72 overflow-hidden"><img src="${item.img}" class="w-full h-full object-cover"></div>
+    function renderGallery() {
+        const container = document.getElementById('store-grid');
+        container.innerHTML = db.map(item => `
+            <div class="bg-[#0d0d0d] rounded-3xl overflow-hidden border border-white/5">
+                <img src="${item.img}" class="w-full h-64 object-cover">
                 <div class="p-6">
                     <h3 class="text-sm font-bold uppercase mb-2">${item.name}</h3>
-                    <p class="text-yellow-500 font-bold">${item.price}</p>
+                    <p class="text-yellow-500 font-bold">${item.price} PKR</p>
                 </div>
             </div>
         `).join('');
     }
 
-    function renderAdmin() {
-        const list = document.getElementById('admin-list');
-        list.innerHTML = inventory.map(item => `
-            <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
+    function renderAdminList() {
+        const list = document.getElementById('admin-inventory');
+        list.innerHTML = db.map(item => `
+            <div class="flex items-center justify-between p-4 bg-black/40 rounded-xl mb-3 border border-white/5">
                 <div class="flex items-center gap-4">
-                    <img src="${item.img}" class="w-12 h-12 rounded-lg object-cover">
-                    <span class="text-[10px] font-bold uppercase">${item.name}</span>
+                    <img src="${item.img}" class="w-12 h-12 rounded object-cover">
+                    <span class="text-xs font-bold uppercase">${item.name}</span>
                 </div>
-                <button onclick="deleteItem(${item.id})" class="text-red-500 text-[10px] font-bold">DELETE</button>
+                <button onclick="deleteItem(${item.id})" class="text-red-500 font-bold text-[10px]">DELETE</button>
             </div>
         `).join('');
     }
 
-    window.onload = () => { showSection('home'); }
+    window.onload = () => { showPage('home'); }
 </script>
 </body>
 </html>
