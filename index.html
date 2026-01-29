@@ -3,245 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naqsh Shoes | Ultimate Control</title>
+    <title>Naqsh Shoes | The Ultimate Experience</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
         
-        :root { --accent: #d4af37; --gold-grad: linear-gradient(135deg, #d4af37 0%, #f1d57a 50%, #d4af37 100%); }
-        body { background-color: #030303; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; cursor: crosshair; }
+        :root { 
+            --accent: #d4af37; 
+            --gold-grad: linear-gradient(135deg, #d4af37 0%, #f1d57a 50%, #d4af37 100%); 
+        }
 
-        /* --- LOGO PERFECTION --- */
-        .logo-box { position: relative; width: 140px; height: 140px; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
-        .logo-ring { position: absolute; inset: 0; border: 2px solid transparent; border-top-color: var(--accent); border-bottom-color: var(--accent); border-radius: 50%; animation: spin 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; }
-        .logo-inner { width: 110px; height: 110px; background: #000; border-radius: 50%; padding: 8px; border: 1px solid rgba(212, 175, 55, 0.2); z-index: 10; overflow: hidden; }
-        .logo-inner img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        body { 
+            background-color: #020202; color: #ffffff; 
+            font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden;
+        }
 
-        /* --- MODERN UI --- */
-        .sidebar { height: 100vh; width: 280px; position: fixed; left: 0; top: 0; background: rgba(5,5,5,0.9); backdrop-filter: blur(50px); z-index: 1000; border-right: 1px solid rgba(212,175,55,0.1); }
-        .main-content { margin-left: 280px; padding: 40px; }
-        .nav-link { padding: 18px 25px; border-radius: 20px; transition: 0.5s; cursor: pointer; font-size: 10px; font-weight: 800; letter-spacing: 3px; color: #666; text-transform: uppercase; display: block; margin-bottom: 10px; }
-        .nav-link:hover { background: rgba(212,175,55,0.1); color: var(--accent); transform: translateX(10px); }
-        .nav-link.active { color: var(--accent); border-left: 3px solid var(--accent); }
+        /* --- MAX ANIMATIONS & TRANSITIONS --- */
+        .glass-sidebar {
+            background: rgba(4, 4, 4, 0.85); backdrop-filter: blur(40px);
+            border-right: 1px solid rgba(212, 175, 55, 0.15);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-        .gold-btn { background: var(--gold-grad); color: #000; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; transition: 0.4s; position: relative; overflow: hidden; }
-        .gold-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
+        .nav-link {
+            position: relative; overflow: hidden;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: 0; left: 25px; width: 0; height: 1px;
+            background: var(--accent); transition: 0.4s;
+        }
+        .nav-link:hover::after { width: 40px; }
+        .nav-link:hover { letter-spacing: 5px; color: var(--accent); transform: translateX(15px); }
 
-        .admin-card { background: #080808; border: 1px solid rgba(255,255,255,0.05); border-radius: 35px; padding: 35px; transition: 0.4s; }
-        input { background: #000 !important; border: 1px solid #1a1a1a !important; color: #fff !important; padding: 16px; border-radius: 18px; width: 100%; margin-bottom: 15px; outline: none; font-size: 12px; }
-        input:focus { border-color: var(--accent) !important; }
+        .product-card {
+            background: #080808; border-radius: 50px; border: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: perspective(1000px);
+        }
+        .product-card:hover {
+            transform: perspective(1000px) translateY(-20px) rotateX(2deg);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 40px 80px -20px rgba(212, 175, 55, 0.15);
+        }
 
-        #login-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(20px); }
+        /* --- LOGO ROTATION & GLOW --- */
+        .logo-container {
+            position: relative; width: 150px; height: 150px;
+            perspective: 1000px;
+        }
+        .logo-ring {
+            position: absolute; inset: 0;
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            animation: rotateRing 15s linear infinite;
+        }
+        .logo-inner-frame {
+            position: absolute; inset: 10px;
+            background: #000; border-radius: 50%; padding: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.05);
+        }
+        .logo-inner-frame img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+
+        @keyframes rotateRing { 100% { transform: rotate(360deg); } }
+
+        /* --- UI ELEMENTS --- */
+        .gold-btn {
+            background: var(--gold-grad); color: black; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 2px;
+            transition: 0.5s; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+        .gold-btn:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3); }
+
+        .admin-panel-card {
+            background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 40px;
+        }
+
+        input {
+            background: transparent !important; border: 1px solid rgba(255,255,255,0.1) !important;
+            color: white !important; border-radius: 15px; padding: 16px;
+            transition: 0.4s;
+        }
+        input:focus { border-color: var(--accent) !important; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+
+        #login-overlay { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
+            z-index: 5000; display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(20px);
+        }
     </style>
 </head>
 <body>
 
-<div id="login-modal" class="animate__animated animate__fadeIn">
-    <div class="bg-[#050505] border border-yellow-500/20 p-12 rounded-[50px] w-96 text-center shadow-2xl">
-        <h2 style="font-family: 'Syncopate';" class="text-yellow-500 text-xs tracking-[0.5em] mb-10">CORE_ACCESS</h2>
-        <input type="text" id="admin-user" placeholder="SYSTEM ID">
-        <input type="password" id="admin-pass" placeholder="SECURITY KEY">
-        <button onclick="attemptLogin()" class="w-full gold-btn py-5 rounded-2xl mt-4">INITIALIZE SYSTEM</button>
-        <button onclick="closeLogin()" class="text-gray-600 text-[10px] mt-8 uppercase tracking-[0.3em] block w-full">Cancel</button>
+<div id="login-overlay">
+    <div class="p-12 w-96 text-center animate__animated animate__zoomIn">
+        <h2 style="font-family: 'Syncopate';" class="text-2xl font-bold mb-10 text-yellow-500 tracking-widest">ENCRYPTED_ID</h2>
+        <input type="text" id="id-entry" placeholder="SYSTEM ID" class="w-full mb-4">
+        <input type="password" id="key-entry" placeholder="SECURITY KEY" class="w-full mb-10">
+        <button onclick="unlockSystem()" class="w-full gold-btn py-5 rounded-2xl">Access Hub</button>
+        <button onclick="closeLogin()" class="mt-8 text-gray-600 text-[10px] tracking-[0.5em] uppercase block w-full">Abort_Connection</button>
     </div>
 </div>
 
-<aside class="sidebar p-8 flex flex-col justify-between">
-    <div class="animate__animated animate__fadeInLeft">
-        <div class="logo-box mb-10">
+<aside class="sidebar glass-sidebar w-[300px] h-screen fixed left-0 top-0 p-10 flex flex-col justify-between z-1000">
+    <div class="animate__animated animate__fadeInDown">
+        <div class="logo-container mx-auto mb-10">
             <div class="logo-ring"></div>
-            <div class="logo-inner">
+            <div class="logo-inner-frame">
                 <img src="https://instagram.fkhi16-2.fna.fbcdn.net/v/t51.2885-19/624808014_17848151646670722_8018140761805361040_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby41MDAuYzIifQ&_nc_ht=instagram.fkhi16-2.fna.fbcdn.net&_nc_cat=106&_nc_oc=Q6cZ2QFp6joj10hXacsfbmyNwTBvjFRRAzMqn8-2kV_K6zRGRt-cRVAMK7tIJhGARkcVFTo&_nc_ohc=DVcveLJJ5coQ7kNvwG2EN4E&_nc_gid=8xKqzyeYLcmmLWk70EzmUA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Afr6VGRgrtFaz5bJRLl8ZHAPHQa4f8Yy36XCUG4pI-bpTQ&oe=69814903&_nc_sid=7a9f4b" alt="Naqsh Logo">
             </div>
         </div>
-        <h1 style="font-family: 'Syncopate';" class="text-center text-yellow-500 font-bold tracking-[0.6em] text-[10px] mb-16">NAQSH</h1>
+        <h1 style="font-family: 'Syncopate';" class="text-center text-yellow-500 font-bold tracking-[0.8em] text-[10px] mb-20">NAQSH</h1>
         
-        <nav>
-            <a onclick="showPage('home')" id="nav-home" class="nav-link active">Home</a>
-            <a onclick="showPage('gallery')" id="nav-gallery" class="nav-link">Gallery</a>
-            <a onclick="openAdmin()" class="nav-link mt-20 opacity-20 hover:opacity-100">⚙️ System</a>
+        <nav class="space-y-6">
+            <a onclick="navigate('home')" class="nav-link block p-4 font-black text-[10px] uppercase tracking-[0.3em] cursor-pointer">01_Home</a>
+            <a onclick="navigate('gallery')" class="nav-link block p-4 font-black text-[10px] uppercase tracking-[0.3em] cursor-pointer">02_Gallery</a>
+            <a onclick="openLogin()" class="nav-link block p-4 font-black text-[10px] uppercase tracking-[0.3em] cursor-pointer mt-20 opacity-20 hover:opacity-100">⚙️ System</a>
         </nav>
     </div>
-    
-    <div id="sidebar-social" class="space-y-4 pb-10 border-t border-white/5 pt-8 animate__animated animate__fadeInUp">
+
+    <div id="contact-hooks" class="space-y-6 pb-10 border-t border-white/5 pt-10 animate__animated animate__fadeInUp">
         </div>
 </aside>
 
-<main class="main-content">
-    <section id="home-page" class="animate__animated animate__fadeIn">
-        <div class="h-[85vh] rounded-[60px] relative overflow-hidden flex items-center justify-center">
-            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=2000')] bg-cover bg-center scale-110"></div>
-            <div class="absolute inset-0 bg-black/60"></div>
-            <div class="relative z-10 text-center px-10">
-                <span class="text-yellow-500 text-[10px] font-bold tracking-[1em] uppercase mb-6 block">Legacy 2026</span>
-                <h2 style="font-family: 'Syncopate';" class="text-8xl font-black mb-12 leading-none">THE NEXT<br>LEVEL</h2>
-                <button onclick="showPage('gallery')" class="gold-btn px-20 py-6 rounded-full text-xs">Enter Gallery</button>
+<main class="main-content ml-[300px] p-12">
+    <section id="home-sec" class="page-sec animate__animated animate__fadeIn">
+        <div class="relative h-[85vh] rounded-[70px] overflow-hidden group">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2000')] bg-cover bg-center transition-transform duration-[10s] group-hover:scale-125"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+            <div class="relative h-full flex flex-col justify-center items-center text-center px-10">
+                <span class="text-yellow-500 font-bold tracking-[1.5em] text-[10px] uppercase mb-8 animate__animated animate__fadeInUp">Premium Craftsmanship</span>
+                <h2 style="font-family: 'Syncopate';" class="text-9xl font-black mb-12 leading-none animate__animated animate__zoomIn">NAQSH<br>ELITE</h2>
+                <button onclick="navigate('gallery')" class="gold-btn px-20 py-6 rounded-full text-xs">Explore The Vault</button>
             </div>
         </div>
     </section>
 
-    <section id="gallery-page" class="hidden animate__animated animate__fadeIn">
-        <div class="mb-16">
-            <h2 style="font-family: 'Syncopate';" class="text-4xl font-bold tracking-tighter text-yellow-500">CURATED_STOCK</h2>
-            <div class="h-1 w-20 bg-yellow-500 mt-4 rounded-full"></div>
+    <section id="gallery-sec" class="page-sec hidden">
+        <div class="mb-20 flex justify-between items-end">
+            <div class="animate__animated animate__fadeInLeft">
+                <span class="text-yellow-500 text-[10px] font-bold tracking-[0.5em] uppercase">Season 2026</span>
+                <h2 style="font-family: 'Syncopate';" class="text-5xl font-bold">AVAILABLE_ASSETS</h2>
+            </div>
         </div>
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"></div>
+        <div id="store-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"></div>
     </section>
 
-    <section id="admin-page" class="hidden animate__animated animate__fadeIn">
+    <section id="admin-sec" class="page-sec hidden">
         <div class="flex justify-between items-center mb-16">
-            <h2 style="font-family: 'Syncopate';" class="text-2xl font-bold text-yellow-500">MANAGEMENT_PORTAL</h2>
-            <button onclick="showPage('home')" class="bg-red-500 text-white px-8 py-3 rounded-full text-[10px] font-black uppercase">Close Session</button>
+            <h2 style="font-family: 'Syncopate';" class="text-3xl font-bold text-yellow-500">CONTROL_CENTER</h2>
+            <button onclick="navigate('home')" class="bg-red-500/10 text-red-500 px-10 py-4 rounded-full text-[10px] font-black border border-red-500/20 hover:bg-red-500 hover:text-white transition">SHUTDOWN</button>
         </div>
-        
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div class="admin-card animate__animated animate__fadeInUp">
-                <h3 class="text-xs font-bold text-gray-500 mb-8 uppercase tracking-widest">Inject New Stock</h3>
-                <input type="text" id="p-name" placeholder="Shoe Model Name">
-                <input type="text" id="p-price" placeholder="Price (e.g. 8,500 PKR)">
-                <input type="text" id="p-img" placeholder="Direct Image URL">
-                <button onclick="addItem()" class="w-full gold-btn py-4 rounded-2xl mt-4">Save to Vault</button>
+            <div class="admin-panel-card p-10 animate__animated animate__fadeInLeft">
+                <h3 class="text-[10px] font-black tracking-[0.4em] uppercase text-gray-500 mb-10">Inject New Asset</h3>
+                <input type="text" id="shoe-name" placeholder="Model Name" class="w-full mb-4">
+                <input type="text" id="shoe-price" placeholder="Price (e.g. 9,500 PKR)" class="w-full mb-4">
+                <input type="text" id="shoe-img" placeholder="Image URL" class="w-full mb-8">
+                <button onclick="addNewProduct()" class="w-full gold-btn py-5 rounded-2xl">Deploy Asset</button>
                 
-                <div id="admin-inventory" class="mt-12 space-y-4">
-                    </div>
+                <div id="admin-list" class="mt-12 space-y-4 max-h-[400px] overflow-y-auto pr-4"></div>
             </div>
 
-            <div class="admin-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-                <h3 class="text-xs font-bold text-gray-500 mb-8 uppercase tracking-widest">Identity & Links</h3>
-                <label class="text-[10px] text-yellow-500 font-bold ml-2">WhatsApp Number</label>
-                <input type="text" id="c-wa" placeholder="0370168186">
-                
-                <label class="text-[10px] text-yellow-500 font-bold ml-2">Instagram Username</label>
-                <input type="text" id="c-ig" placeholder="naqshshoes">
-                
-                <label class="text-[10px] text-yellow-500 font-bold ml-2">Facebook Full Link</label>
-                <input type="text" id="c-fb" placeholder="https://facebook.com/yourpage">
-                
-                <button onclick="saveContacts()" class="w-full border border-yellow-500/30 text-yellow-500 py-4 rounded-2xl mt-4 font-black text-[10px] hover:bg-yellow-500 hover:text-black transition uppercase">Re-Configure Links</button>
+            <div class="admin-panel-card p-10 animate__animated animate__fadeInRight">
+                <h3 class="text-[10px] font-black tracking-[0.4em] uppercase text-gray-500 mb-10">Identity Re-Configuration</h3>
+                <div class="space-y-8">
+                    <div>
+                        <label class="text-[10px] text-yellow-500 font-bold uppercase ml-2 mb-2 block">WhatsApp Target</label>
+                        <input type="text" id="set-wa" placeholder="e.g. 0370168186" class="w-full">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-yellow-500 font-bold uppercase ml-2 mb-2 block">Instagram Handle</label>
+                        <input type="text" id="set-ig" placeholder="e.g. naqshshoes" class="w-full">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-yellow-500 font-bold uppercase ml-2 mb-2 block">Facebook Link</label>
+                        <input type="text" id="set-fb" placeholder="https://facebook.com/..." class="w-full">
+                    </div>
+                    <button onclick="saveIdentity()" class="w-full border-2 border-yellow-500/20 text-yellow-500 py-5 rounded-2xl font-black text-[10px] tracking-[0.3em] hover:bg-yellow-500 hover:text-black transition-all">Update Identity Matrix</button>
+                </div>
             </div>
         </div>
     </section>
 </main>
 
 <script>
-    // --- PERSISTENT DATA ---
-    let db = JSON.parse(localStorage.getItem('naqsh_stock')) || [];
-    let config = JSON.parse(localStorage.getItem('naqsh_config')) || { 
+    // --- DATABASE ---
+    let products = JSON.parse(localStorage.getItem('naqsh_prods')) || [];
+    let identity = JSON.parse(localStorage.getItem('naqsh_id')) || { 
         wa: "0370168186", 
         ig: "naqshshoes", 
         fb: "https://facebook.com/naqshshoes" 
     };
 
-    // --- NAVIGATION ---
-    function showPage(id) {
-        ['home', 'gallery', 'admin'].forEach(p => {
-            document.getElementById(p + '-page').classList.add('hidden');
-            const nav = document.getElementById('nav-' + p);
-            if(nav) nav.classList.remove('active');
-        });
-        document.getElementById(id + '-page').classList.remove('hidden');
-        if(document.getElementById('nav-' + id)) document.getElementById('nav-' + id).classList.add('active');
-        
-        if(id === 'gallery') renderGallery();
-        if(id === 'admin') { renderAdminStock(); populateConfig(); }
+    // --- ENGINE ---
+    function navigate(page) {
+        document.querySelectorAll('.page-sec').forEach(s => s.classList.add('hidden'));
+        document.getElementById(page + '-sec').classList.remove('hidden');
+        if(page === 'gallery') renderGallery();
+        if(page === 'admin') { renderAdminList(); syncAdminInputs(); }
     }
 
-    // --- AUTHENTICATION ---
-    function openAdmin() { document.getElementById('login-modal').style.display = 'flex'; }
-    function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
-    function attemptLogin() {
-        if(document.getElementById('admin-user').value === "NaqshShoes" && 
-           document.getElementById('admin-pass').value === "Gixxer1000") {
-            closeLogin(); showPage('admin');
-        } else { alert("ACCESS DENIED: Credentials Mismatch"); }
+    function openLogin() { document.getElementById('login-overlay').style.display = 'flex'; }
+    function closeLogin() { document.getElementById('login-overlay').style.display = 'none'; }
+
+    function unlockSystem() {
+        const id = document.getElementById('id-entry').value;
+        const key = document.getElementById('key-entry').value;
+        if(id === "NaqshShoes" && key === "Gixxer1000") {
+            closeLogin(); navigate('admin');
+        } else { alert("ACCESS DENIED: Neural mismatch."); }
     }
 
-    // --- STOCK LOGIC ---
-    function addItem() {
-        const name = document.getElementById('p-name').value;
-        const price = document.getElementById('p-price').value;
-        const img = document.getElementById('p-img').value;
+    // --- STOCK MANAGEMENT ---
+    function addNewProduct() {
+        const name = document.getElementById('shoe-name').value;
+        const price = document.getElementById('shoe-price').value;
+        const img = document.getElementById('shoe-img').value;
         if(name && price && img) {
-            db.unshift({ id: Date.now(), name, price, img });
-            localStorage.setItem('naqsh_stock', JSON.stringify(db));
-            renderAdminStock();
-            alert("ASSET DEPLOYED");
-            document.getElementById('p-name').value = '';
-            document.getElementById('p-price').value = '';
-            document.getElementById('p-img').value = '';
+            products.unshift({ id: Date.now(), name, price, img });
+            saveDB();
+            renderAdminList();
+            alert("ASSET DEPLOYED SUCCESSFULLY");
+            ['shoe-name', 'shoe-price', 'shoe-img'].forEach(i => document.getElementById(i).value = '');
         }
     }
 
-    function deleteItem(id) {
-        if(confirm("Purge asset from database?")) {
-            db = db.filter(i => i.id !== id);
-            localStorage.setItem('naqsh_stock', JSON.stringify(db));
-            renderAdminStock();
+    function deleteProduct(id) {
+        if(confirm("Purge asset from reality?")) {
+            products = products.filter(p => p.id !== id);
+            saveDB(); renderAdminList();
         }
     }
 
-    // --- CONTACT LOGIC ---
-    function populateConfig() {
-        document.getElementById('c-wa').value = config.wa;
-        document.getElementById('c-ig').value = config.ig;
-        document.getElementById('c-fb').value = config.fb;
+    // --- IDENTITY MANAGEMENT ---
+    function syncAdminInputs() {
+        document.getElementById('set-wa').value = identity.wa;
+        document.getElementById('set-ig').value = identity.ig;
+        document.getElementById('set-fb').value = identity.fb;
     }
 
-    function saveContacts() {
-        config.wa = document.getElementById('c-wa').value;
-        config.ig = document.getElementById('c-ig').value;
-        config.fb = document.getElementById('c-fb').value;
-        localStorage.setItem('naqsh_config', JSON.stringify(config));
-        renderSidebarLinks();
-        alert("CHANNELS RE-CONFIGURED");
+    function saveIdentity() {
+        identity.wa = document.getElementById('set-wa').value;
+        identity.ig = document.getElementById('set-ig').value;
+        identity.fb = document.getElementById('set-fb').value;
+        localStorage.setItem('naqsh_id', JSON.stringify(identity));
+        loadHooks();
+        alert("IDENTITY RE-CONFIGURED");
     }
 
     // --- RENDERING ---
     function renderGallery() {
-        const grid = document.getElementById('product-grid');
-        if(db.length === 0) { grid.innerHTML = "<p class='text-gray-600 font-bold uppercase tracking-widest'>Vault is Empty</p>"; return; }
-        grid.innerHTML = db.map((item, idx) => `
-            <div class="bg-[#080808] rounded-[45px] overflow-hidden border border-white/5 group animate__animated animate__fadeInUp" style="animation-delay: ${idx * 0.1}s">
-                <div class="h-96 overflow-hidden relative">
-                    <img src="${item.img}" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+        const grid = document.getElementById('store-grid');
+        if(products.length === 0) { grid.innerHTML = "<p class='text-gray-700 tracking-[0.5em] uppercase text-xs font-bold'>Vault is empty.</p>"; return; }
+        grid.innerHTML = products.map((p, idx) => `
+            <div class="product-card group animate__animated animate__fadeInUp" style="animation-delay: ${idx * 0.1}s">
+                <div class="h-[450px] overflow-hidden rounded-[50px] relative">
+                    <img src="${p.img}" class="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-125">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                         <a href="https://wa.me/${identity.wa}?text=I am interested in ${p.name}" target="_blank" class="gold-btn px-10 py-4 rounded-full text-[10px]">Order Now</a>
+                    </div>
                 </div>
-                <div class="p-10">
-                    <h3 class="text-sm font-black uppercase mb-2 tracking-[0.2em]">${item.name}</h3>
-                    <p class="text-yellow-500 font-black text-xl mb-8">${item.price}</p>
-                    <a href="https://wa.me/${config.wa}?text=I am interested in ${item.name}" target="_blank" class="block text-center bg-white/5 border border-white/10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-yellow-500 hover:text-black transition-all">Request via WhatsApp</a>
+                <div class="p-10 text-center">
+                    <h3 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-2">${p.name}</h3>
+                    <p class="text-2xl font-black text-yellow-500">${p.price}</p>
                 </div>
             </div>
         `).join('');
     }
 
-    function renderAdminStock() {
-        const list = document.getElementById('admin-inventory');
-        list.innerHTML = db.map(item => `
-            <div class="flex items-center justify-between p-5 bg-black rounded-2xl border border-white/5">
-                <div class="flex items-center gap-4">
-                    <img src="${item.img}" class="w-12 h-12 rounded-xl object-cover">
-                    <span class="text-[10px] font-bold uppercase tracking-widest">${item.name}</span>
+    function renderAdminList() {
+        const list = document.getElementById('admin-list');
+        list.innerHTML = products.map(p => `
+            <div class="flex items-center justify-between p-6 bg-black/40 border border-white/5 rounded-3xl group">
+                <div class="flex items-center gap-6">
+                    <img src="${p.img}" class="w-16 h-16 rounded-2xl object-cover">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest">${p.name}</p>
+                        <p class="text-yellow-500 text-xs font-bold">${p.price}</p>
+                    </div>
                 </div>
-                <button onclick="deleteItem(${item.id})" class="text-red-500 font-bold text-[10px] px-4 hover:bg-red-500/10 py-2 rounded-lg">DELETE</button>
+                <button onclick="deleteProduct(${p.id})" class="p-4 rounded-2xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition">🗑️</button>
             </div>
         `).join('');
     }
 
-    function renderSidebarLinks() {
-        document.getElementById('sidebar-social').innerHTML = `
-            <a href="https://wa.me/${config.wa}" target="_blank" class="text-[9px] font-black opacity-30 hover:opacity-100 uppercase tracking-widest block transition">WhatsApp.Live</a>
-            <a href="https://instagram.com/${config.ig}" target="_blank" class="text-[9px] font-black opacity-30 hover:opacity-100 uppercase tracking-widest block transition">Instagram.Feed</a>
-            <a href="${config.fb}" target="_blank" class="text-[9px] font-black opacity-30 hover:opacity-100 uppercase tracking-widest block transition">Facebook.Net</a>
+    function loadHooks() {
+        document.getElementById('contact-hooks').innerHTML = `
+            <a href="https://wa.me/${identity.wa}" target="_blank" class="flex items-center gap-4 text-[9px] font-black text-gray-600 hover:text-yellow-500 transition-all uppercase tracking-[0.4em]">WhatsApp.Connect</a>
+            <a href="https://instagram.com/${identity.ig}" target="_blank" class="flex items-center gap-4 text-[9px] font-black text-gray-600 hover:text-yellow-500 transition-all uppercase tracking-[0.4em]">Instagram.Feed</a>
+            <a href="${identity.fb}" target="_blank" class="flex items-center gap-4 text-[9px] font-black text-gray-600 hover:text-yellow-500 transition-all uppercase tracking-[0.4em]">Facebook.Network</a>
         `;
     }
 
-    // Initialize
+    function saveDB() { localStorage.setItem('naqsh_prods', JSON.stringify(products)); }
+
+    // --- INITIALIZE ---
     window.onload = () => {
-        renderSidebarLinks();
-        showPage('home');
+        loadHooks();
+        navigate('home');
     }
 </script>
 </body>
